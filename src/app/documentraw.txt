@@ -327,4 +327,164 @@ Client Component PLacement:
                              To compensate for server components not beinng able to manage stste snd handle interactivity ,you need to crate client components 
                              it's recommended to poosition these client components lower in your component tree 
                              
-                          
+
+data fetching in app router :
+                            
+                             App Roouter uses the react sompoonents srchitecture ,which allows us to fetch the data using eighter server components oor client components 
+                             it's advantageous to fetch dat using server component ,as they have direct acces to server side resources such as database or the sytem 
+                             This not only tapes into teh server's computatiopnal power  and proximity to data sources for efficirnt dta fetching and rendering but also minimize teh need for client-side proessing 
+                             we'll explore data fetching techniqies using both server and the client components in next.js 
+                             Server components suport variious confiiguration foe caching ,revalidating and optimizing data fetching 
+                             on the cliient side ,data fetching is typically managed through third-party libraries such as TanStack query  which offers its own roobust APIs 
+
+Data fetvhing in the server Components :
+ The Rsc architecture in the app router introduce support for async and await keywords in Server Components 
+ THis alloes you to use the familiar js await syntsx by defining yourcomponent asynchronous function 
+ This is the basis for  data fetching in Server Component 
+
+loading and error states 
+ Teaditionally in react ,you might mansge these states by creating seperate variiab;es snd confitional rendering Ui based on their values 
+ to implement a loading state ,definr and export a React component in loading.tsx
+ for handeling errors , define and expoert a react compoonent in error.tsx
+
+ costome server 
+ | Problem            | Fix             |
+| ------------------ | --------------- |
+| `"type": "module"` | Use `.cjs`      |
+| json-server stable | CommonJS        |
+| Node 24            | Fully supported |
+| ESLint             | Scoped disable  |
+You said your db.json looks like this:
+
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "product 1",
+      "price": 1000,
+      "description": "Description 1"
+    },
+    {
+      "id": 2,
+      "title": "product 2",
+      "price": 2000,
+      "description": "Description 2"
+    },
+    {
+      "id": 3,
+      "title": "product 3",
+      "price": 3000,
+      "description": "Description 3"
+    }
+  ]
+}
+
+
+Notice the top-level key: "products"
+
+2️⃣ How JSON Server works
+
+json-server automatically creates RESTful routes for each top-level key in your JSON:
+
+JSON key	Generated route
+"products"	/products
+"users"	/users
+"orders"	/orders
+
+Basically:
+
+Every top-level array in db.json becomes a route.
+
+caching Data 
+  BY default ,next.js automatiaclly caches the return values of fetch in the data caches on the server 
+
+Data  Caches 
+ What is data cache?
+ it si server-side caches that persist the result of data fetches across incoming server request and deployment 
+
+ Why it is requires ?
+ THe data cache imoproves app performance and reduces cost by eliminating the need for re-fetching data from your data source eith every request 
+
+ how does it work ?
+ Here’s the short explanation of the diagram:
+
+Browser requests /products.
+
+Server checks cache:
+
+MISS: Data not in cache → fetch from database/API → store in cache → send to browser.
+
+HIT: Data in cache → send cached data → faster response.
+
+Browser renders the page using the received data.
+
+Key point: Cache improves speed by avoiding repeated fetches from the database/API
+
+opting Out of Caching 
+ FOr individual data fetches ,you can opt out of caching by setting the cache option to no-store
+  const response = await fetch("http://localhost:3001/products", {
+    cache: "no-store",
+  }); 
+  this cache:"no-store" doesnt cache the data from the api call it make each request every time user make the requst and doesnt cache the data 
+
+  By Default Next.js will cache fetch() requestr that occure before any dynamic functio(Cookies(),headers(),searchParams())are  used and will nnot cache request founf after dynamic funncton 
+
+  Option 1: Default first, no-store second
+
+detailsResponse → may be cached by Next.js (default behavior).
+
+products → { cache: "no-store" } → always fresh, hits API every time.
+
+Option 2: No-store first, default second
+
+detailsResponse → { cache: "no-store" } → always fresh.
+
+products → default → may be cached.
+
+Key point:
+
+Each fetch decides its own caching behavior.
+
+Order doesn’t matter — only whether cache: "no-store" or default is used.
+
+
+Request Momoization:
+       Request Momoization is a technique that deduplicates request form the same data witin a single render pass 
+       This approach is a technique for re-use of the data in a react component tree,prevents redundant network calls and enhances performance 
+       For this initial request ,data is fetched  form an externa source and the result is  stored in memory 
+       Subquent requedt for the same data eithin the same render pass retrive the result from memory ,by passing hhe need to make the request again 
+       This optimizatin not only enhance performance but also simplifies data fetching eithin a component tree 
+       When the same data is needed across different componrnts in the route (eg in layout page ,and mmultiple components ),it eliminates the need to fetch hthe top of the tree and  pass proops between components 
+       Instead ,dta can c=be fetched directly within the components that require it ,without concern about the performance implication of multiple network request for the same data 
+
+key feature  
+Request Memoization is a react feature ,not specifically a  Next.js feature 
+Memoization only  applies to the GET method in fetch request        
+MEmiization only applies within the react component tree it dooes't extend to fetch in routr handlers as they are not part of the react component tree 
+For cases wjhere fetches is not suitable (eg some databases clients ,CMS client or GRaphQl clients),you can use the reACT cache function to memoize functions 
+
+Caching in the Next.js 
+By dafault Next.js chaches all fetch request in the data caches which is a persistent HTTp caches o the server 
+THis hrlps optimize thr pages such as a blog post where the  content rerely changes 
+
+We also know that we can opt out of caching 
+-by using thr cachr :"no-store" option in the fetch request 
+-by using a dynamic  function before making thr fetch request 
+-by using a routee segment config like fetch-cachrh or dynamic 
+
+A news website is  a great  example where you want to make sure you're  fetching the lattest data at all times
+This apporach sems binary  eighter caching  or no caching 
+In the real-world application ,there  are scenarios where a middile geound is required 
+For example ,an event listing page might havr details such as schedule or venue informatio that changes occasionally 
+In this cacher ,it is acceptable to fetch updated data once every houre as freahness is not critiical
+
+ For  suuch scenario ,Next  .js alloes us to revalidate the cache
+
+ Recalidation 
+          it is the process of purging the data Caches and re fetching the lates data ]
+  Time-Based Revalidation :
+    Next.js automatically revalidates data after a certain amount time has passed
+
+
+you caan set the revalidate route segment confoguration to establish the default revalidation time foe a layout or page:EXport const revalidate =10;
+Regarding the revalidation frequency ,the lowest recalidatr time across each layout and pagr of a single route will detrmine the revalidation frequenncy of the entire route 

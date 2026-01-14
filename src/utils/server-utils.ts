@@ -8,3 +8,4 @@ const serverSideFunction = () => {
 };
 
 export default serverSideFunction;
+//server only code 

@@ -8,3 +8,14 @@ const NavSearch = () => {
 };
 
 export default NavSearch;
+//we use here because it doesn have any clindern below
+{/**                LANDING PAGE (SC)
+                       |
+            -------------------------
+            |                       |
+        NAV BAR (SC)             MAIN (SC)
+            |
+      -----------------
+      |               |
+  NAV LINKS (SC)   NAV SEARCH (SC)
+ */}
