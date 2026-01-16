@@ -488,3 +488,79 @@ In this cacher ,it is acceptable to fetch updated data once every houre as freah
 
 you caan set the revalidate route segment confoguration to establish the default revalidation time foe a layout or page:EXport const revalidate =10;
 Regarding the revalidation frequency ,the lowest recalidatr time across each layout and pagr of a single route will detrmine the revalidation frequenncy of the entire route 
+
+
+
+now Next.js 15 
+What is next.js ?
+Next.js is a react framework for building full-stack web application 
+REact 
+It's not feaslible to crate a fully-faettured application for peoduction React is a library for building user interfaces
+You need to make secision about other fetaures such as touting ,data fetching and more 
+In the other hand in  Next.js
+ir uses React for building users interfaces 
+Provides additional fetaurre that enab;e you to build production-ready application 
+These feature include routing .optmize rendering ,dat fetching bundling compilinf and more 
+You't have to install additional packages as next.js provides everything you need 
+opinions and convention should be followed to implemrnt these feature 
+The conventions have emerged from a team with yerrs i=of experience in writiong React apps for production 
+
+what am i going to leran 
+-how to setup a Next.js project fronn the scratch 
+-The ins and outs of the client and the server Components 
+-Hoe to use the new app router for defining pages and layouts 
+-How Next.js hanndles navigation
+ -Creating API routes Data fetching stategises 
+ -Data mutations with Server Actions 
+ -Authentication 
+
+
+client Component                                 Server component 
+-renderd in the browser                       -renderd exclusivly on the server 
+-renderd to HTML once on the server           -never sent to the client 
+-immidiately see the page's HTMl content       -fater page load 
+rather thann a blank screen      
+-can use state ,effects and browser-only Apis    -can't use interactivity features like useState or useEffect
+-add "use client" directive aththe top of your file -server components are the default 
+
+
+USES 
+-fetchi the data                         intteractivity and ebvent listners 
+-accessing backend resources             -using Hooks kie usestate or useEffect
+-keeping sensetive infoormation on the server  -using browser-n=only Apis 
+ 
+
+ Routing 
+ Next.js has a file-system based routing mechanism 
+ The way you organize  your files and folder determines the routes of your application 
+
+ Routind conventions:
+ -all route  must be placed inside the app folder 
+ -every file thst  represent a route should be names as page.js or the page.tsx depending on what are you using typescript or the js
+ -every folder corresponding to a path segments in the browsser url 
+
+Sever Actions 
+server action saresync functions that are seecuted on the server 
+Thye alloe us to define and exicute server-logic  directly from our componrnts 
+They're increadibely useful for handleling form submission ,updates databses or any operation that require server-side execution 
+ 
+The server.json soenst make the changes on the datas so that we are using the mockapi.io for data fetching 
+ for  the Authentication we will be uisng clerk 
+  For the Authentication with clerk  we will be covering 
+
+1.Signup 
+2.signin
+3.manage account 
+4.Show the ui elememnt base on the auth status 
+5 .Protect route based on the auth status
+6.Read session and user  data 
+7.sign out 
+
+Wrapping up
+we have covered 
+introduction to next.js 15     navigation 
+Development environment        Route handlers 
+Project structure              Data fetching Staategies 
+Sserver and  client Components sever Actions
+App routers                    Authentication 
+layout 
